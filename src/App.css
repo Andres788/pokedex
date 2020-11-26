@@ -1,0 +1,171 @@
+.pagination-row{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 1em 2em;
+}
+.pagination-row2{
+  margin-top: 5px;
+  width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.pagination-row > .item{
+  text-align: center;
+  background-color: rgb(234 49 49);;
+  cursor: pointer;
+  margin: 2px;
+  width: 20%;
+  
+  font-size:2em;
+}
+
+.pagination-row > .item:hover{
+  background-color: #f57e7e;
+}
+
+.row-card{
+  margin-top:2%;
+  margin-left:2%;
+  box-sizing: border-box;
+  width: 96%;
+  padding:1%;
+  display: flex;
+  flex-wrap: wrap;
+  height: 80vh;
+  border-radius: 40px;
+ background:white;
+}
+.pokedex-container{
+  display:flex;
+  flex-wrap: wrap;
+  width: 100%;
+  background:black;
+
+
+
+}
+.column1{
+  padding-top: 5%;
+    text-align: center;
+    /* height: 100%; */
+    width: 100%;
+}
+.column2{
+  /* height: 100%; */
+  width: 100%;
+}
+.column3{
+  /* height: 100%; */
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  
+}
+.textStat{
+  font-size:0.8em;
+  font-weight: 600;
+  
+}
+.imgType{
+  font-size:20px;
+  height: 85px;
+  border-radius:50%;
+  box-shadow: 10px 5px 5px black;
+}
+.imgstat{
+  font-size:20px;
+  height: 30px;
+}
+.containerstats{
+  width: 45%;
+  background: rgb(236, 230, 230);
+  margin:1px;
+  margin-left:10px;
+  margin-top:10px;
+  text-align: center;
+  border-radius: 15px;
+
+}
+.containersstats{
+  display: flex;
+  flex-wrap: wrap;
+}
+.black-text{
+  color:black
+}
+.containerTypes{
+  justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+}
+.textName{
+  font-size:3em;
+  font-family: 'Monoton', cursive;
+}
+.titleBasic{
+  margin-top:20px;
+  font-size:3.2em;
+  font-family: 'Monoton', cursive;
+  width: 100%;
+}
+.cardcolor{
+  background: black
+}
+.pgination{
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  display: flex;
+  padding-left: 0;
+  list-style: none;
+  border-radius: 0.25rem;
+}
+.containerpagination{
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  display: flex;
+  background:black
+}
+.botonimagen{
+  background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlU-wNhiuXKk51Sc_3BiqZhcO5KmXSydudIw&usqp=CAU');
+  background-repeat:no-repeat;
+  height: 80px;
+    width: 78px;
+  background-position:center;
+  border-radius:50% }
+  .botonimagen2{
+    background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlU-wNhiuXKk51Sc_3BiqZhcO5KmXSydudIw&usqp=CAU');
+    background-repeat:no-repeat;
+    height: 80px;
+      width: 78px;
+    background-position:center;
+    border-radius:50% }
+  
+  .inputSearch{
+    padding: 5px;
+    width: 320px;
+    height: 75px;
+    border-radius: 15px ;
+  }
+.search-style{
+  
+  display: flex;
+  width: 70%;
+}
+input::placeholder {
+  color: black;
+  font-size: 1.5em;
+  font-style: italic;
+}
+.container-card{
+  display: block;
+  width: 100vw;
+  background: black;
+
+}
+.body{
+  background:black
+}

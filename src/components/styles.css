@@ -1,10 +1,7 @@
 .imgPoke{
-    height: 80%;
-}
-.imgPoke:Hover{
     height: 100%;
-   
 }
+
 .pokedex-container{
     display: flex;
     flex-wrap: wrap;

@@ -1,130 +1,103 @@
-import React from 'react';
-import Card from './components/card';
-import Pagination from './components/pagination';
+import React, {useState} from "react";
 import './App.css';
-import './components/styles.css'
+import firebase, {auth} from "./firebase/config";
+import SignIn from "./components/SignIn";
+import {Route, Switch, useHistory} from "react-router-dom";
+import Header from "./components/Header";
+import SignUp from "./components/SignUp";
+import PrivateRoute from "./components/PrivateRoute";
+import Pokedex from "./components/pokedex";
 
-export default class App extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            pokemones: [],
-            pokeInfo: [{stat:{name:""}}],
-            pokeType:[{type:{name:""}}],
-            currentPage: 1,
-            pagesShow:[0,1,2,3,4,5,6,7],
-            pokemonPerPage: 1,
-            initPoke: 1,
-           
-        }
-        
-    }
 
-    componentDidMount() {
-     
-        const limit = this.state.pokemonPerPage;
-        const url = 'https://pokeapi.co/api/v2/pokemon';
-        //Consumir la API de pokeapi
-        fetch(`${url}?limit=${limit}`)
-            .then(response => response.json())
-            .then(data => this.setState({pokemones: data.results}))
-            .catch( error => {
-              console.log(error);
-            })
-            
-    }
-    fns=(index)=> {
-      this.getInfo(index);
-      this.fetchPage(index);
-    }
-    getInfo=(index)=> {
-      let newArrayPoke=[]
-      fetch(`https://pokeapi.co/api/v2/pokemon/${index}`)
-          .then(response => response.json())
-          .then(data => this.setState({pokeInfo: data.stats}))
-          .catch( error => {
-            console.log(error);
-          })
-          fetch(`https://pokeapi.co/api/v2/pokemon/${index}`)
-          .then(response => response.json())
-          .then(data => this.setState({pokeType: data.types}))
-          .catch( error => {
-            console.log(error);
-          })
-          
+function App() {
+  let history = useHistory();
+  //Provedor de autenticacion con google
+  let provider = new firebase.auth.GoogleAuthProvider();
+  let facebookProvider = new firebase.auth.FacebookAuthProvider();
+  let [user, setUser] = useState({});
+  let [imgProfile, setImgProfile] = useState("https://happytravel.viajes/wp-content/uploads/2020/04/146-1468479_my-profile-icon-blank-profile-picture-circle-hd-300x238.png");
+  let [isLogged, setIsLogged] = useState(false);
+  let [nameProfile, setnameProfile] = useState('user')
+
+  const signInGoogle = () => {
+    auth.signInWithPopup(provider)
+    .then(result => {
+      let user = result.user;
+      setUser(user);
+      setImgProfile(user.photoURL);
+      setnameProfile(user.displayName)
+      setIsLogged(true);
+      history.push('/panel');
+    }).catch(error => {
+      setIsLogged(false);
+      console.log(error);
+    })
+    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.session)
+    .then(result => {
+      let user = result.user;
+      setUser(user);
+      setIsLogged(true);
+      history.push('/panel');
+    }).catch(error => {
+      setIsLogged(false);
+      console.log(error);
+});
+  }
+
+  const signInFacebook = () => {
+    auth.signInWithPopup(facebookProvider).then(result => {
+      let token = result.credential.accessToken;
+      let user = result.user;
+      setUser(user);
+      setImgProfile(user.photoURL);
+      setnameProfile(user.displayName);
+      setIsLogged(true);
+      history.push('/panel');
+      console.log(user);
+      
+
+    }).catch(error => {
+      console.log(error);
+    })
+  }
+  const logout =()=>{
+    firebase.auth().signOut().then(function() {
+      setImgProfile("https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png");
+      setnameProfile("user");
+      setIsLogged(false);
+
+      // Sign-out successful.
+    }).catch(function(error) {
+      // An error happened.
+    });
   }
   
-    fetchPage = (requestPage) => {
-      //1. Completar el método para poder obtener los pokemones dependiendo de la página solicitada
-      const limit = this.state.pokemonPerPage;
-      const url = 'https://pokeapi.co/api/v2/pokemon';
-     
-      this.setState({initPoke:requestPage, currentPage:requestPage});
-      fetch(`${url}?limit=${limit}&offset=${(requestPage - 1) * this.state.pokemonPerPage}`)
-            .then(response => response.json())
-            .then(data => this.setState({pokemones: data.results}))
-            .catch( error => {
-              console.log(error);
-            }
-            )
-            let cantPageShow=6;
-            let pages = [];
-            if(requestPage >5){
-            let limiteInferior = requestPage - 4;
-            let limiteSuperior = requestPage + 1;
-            for(let i = limiteInferior; i<=limiteSuperior; i++){
-            pages.push(i);
-            }
-            }else{
-            for(let i = 0; i<=cantPageShow; i++){
-            pages.push(i);}}
-            this.setState({currentPage: requestPage})
-            this.setState({pagesShow:pages})
-          
-            
-    }
-
-    render() {
-        return (
-          
-            <div className="pokedex-container">
-              {
-                
-                this.state.pokemones.map( (pokemon, index) => {  
-                  if(this.state.initPoke>1){ 
-                   index=((index)+(this.state.pokemonPerPage*(this.state.initPoke-1)))
-                  }
-                  //2. Solucionar el problema de obtener las imagenes de los pokemones con id < 10, > 10, > 100      
-                  
-                  let pokemonImg = `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${(index+1>9)&&(index+1<100) ? ("0"+(index+1)):((index>98) ?((index+1)):("00"+(index+1)))}.png`
-                  
-                  return (
-                    <Card key={index + 1} name={pokemon.name}
-                     img={pokemonImg}  
-                     pokemones={this.state.pokemones}
-                     pokeName={this.state.pokemones.name}
-                     pokeInfo={this.state.pokeInfo}
-                     pokeType={this.state.pokeType} 
-                     index={index}
-                     currentPage={this.state.currentPage} 
-            fetchPageFn={this.fetchPage} 
-            paginationShow={this.paginationShow} 
-            ShowPages={this.state.pagesShow}
-            fns={this.fns} />
-                  )
-                })
-              }
-               
-            <Pagination currentPage={this.state.currentPage} 
-            fetchPageFn={this.fetchPage} 
-            paginationShow={this.paginationShow} 
-            ShowPages={this.state.pagesShow}
-            fns={this.fns} />
-            
-            
+  return (
+    
+      <div className="App">
+        
+        <Header imgProfile={imgProfile} nameProfile={nameProfile} logout={logout} logged={isLogged} />
+        <Switch>
+          <Route path="/" exact>
+            <SignIn 
+            signInGoogle={signInGoogle} 
+            signInFacebook={signInFacebook} 
+            logged={isLogged} 
+            setIsLogged={setIsLogged} 
+            history={history}
+            setImgProfile={setImgProfile}/>
+          </Route>
+          <Route path="/registro">
+            <SignUp />
+          </Route>
+          <PrivateRoute path="/panel" logged={isLogged} user={user} signInGoogle={signInGoogle} signInFacebook={signInFacebook}>
+            <div className="ContainerPokedex">
+            <Pokedex />
             </div>
-           
-            
-        )
-    }
+          </PrivateRoute>
+        </Switch>
+      </div>
+  );
 }
+
+export default App;

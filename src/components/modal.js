@@ -22,19 +22,18 @@ class MODAL extends React.Component{
     // }
     return(
       <>
-      <div className="principal">
+ 
         <div className="secundario">
-      <Button className="botonimagen" color="success" onClick={this.abrirModal}></Button>
+          <Button className="botonimagen" onClick={this.abrirModal}></Button>
+         </div>
 
-      </div></div>
-
-      <Modal isOpen={this.state.abierto}>
-        <ModalHeader>
-          INFO POKEMON
-        </ModalHeader>
-        <ModalBody>
-        <PokeInfo pokeInfo={this.props.pokeInfo} pokemones={this.props.pokemones} pokeType={this.props.pokeType}/>
-        </ModalBody>
+         <Modal isOpen={this.state.abierto}>
+           <ModalHeader>
+               INFO POKEMON
+          </ModalHeader>
+          <ModalBody>
+              <PokeInfo pokeInfo={this.props.pokeInfo} pokemones={this.props.pokemones} pokeType={this.props.pokeType}/>
+          </ModalBody>
 
         <ModalFooter>
         

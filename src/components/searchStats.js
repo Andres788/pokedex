@@ -16,12 +16,12 @@ export default class pokeInfo extends React.Component {
         render(){
            
    return(
-       <div>
+       <>
        
          <GetStats pokeInfo={this.props.pokeInfo}/>
          
           
-        </div>
+        </>
    )
        
 }  
